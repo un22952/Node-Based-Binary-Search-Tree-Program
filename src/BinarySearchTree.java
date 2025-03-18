@@ -1,3 +1,4 @@
+
 /*
  * BinarySearchTree class.
  */
@@ -102,7 +103,7 @@ public BinarySearchTree<T extends Comparable<T>> {
         // recursively get to the end of each branch
         if (node != null) {
 
-            getNumLeafNodes(node.left);
+            getLeaf(node.left, button);
             // this is for leaf counting
             if (node.left == null && node.right == null) {
                 leafCount += 1; // update the number of leaves
@@ -122,7 +123,7 @@ public BinarySearchTree<T extends Comparable<T>> {
                 } // if
             } // else if
 
-            getNumLeafNodes(node.right);
+            getLeaf(node.right, button);
         } // if
     } // getLeaf
 
@@ -154,5 +155,28 @@ public BinarySearchTree<T extends Comparable<T>> {
 
     } // getCousins
 
+    /*
+     * Gets root.
+     *
+     * @param T item.
+     */
+    public NodeType<T extends Comparable<T>> getRoot(T item) {
+        NodeTtpe<T> parent = root;
+        while (parent != null) {
+
+            if ((parent.left != null && parent.left.info.compareTo(item) == 0)
+                || (parent.right != null && parent.right.info.compareTo(item) == 0)) {
+                return parent;
+            } // if
+            if (parent.info.compareTo(item) < 0) {
+                parent = parent.right;
+            } else if (parent.info.compareTo(item) > 0) {
+                parent = parent.left;
+            } else {
+                return;
+            } // else
+        } // if
+        return;
+    } // getRoot
 
 } // BinarySearchTree class

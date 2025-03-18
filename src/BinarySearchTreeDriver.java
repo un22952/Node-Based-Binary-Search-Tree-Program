@@ -1,0 +1,101 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
+/*
+ * Binary Search Tree Driver.
+ *
+ */
+public class BinarySearchTreeDriver {
+
+    /*
+     * The main function.
+     */
+    public static void main (String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        try(BufferedReader reader = new BufferedReader(
+                new FileReader(args[0]))) {
+            String[] stF = reader.readLine().split("\\s+");
+            System.out.println("Enter tree type (i - int, d - double, s std:string): ");
+            String str = scanner.nextLine();
+            if (str.equals("i")) {
+                BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
+
+            } else if (str.equals("d")) {
+
+            } else {
+
+            } // else
+        } catch (IOException e) {
+            e.printStackTrace();
+        } // catch
+    } // main
+
+    /*
+     * Reads file.
+     *
+     */
+    public static <T extends Comparable<T>> void readF(String[] str,
+                                                       BinarySearchTree<T> bst, String type) {
+        for (String each: str) {
+            if (type.equals("i")) { // integer
+            } else if (type.equals("d")) { // double
+            } else { // string
+            } // else
+        } // for
+    } // readF
+
+    public static <T extends Comparable<T>> void menu(Scanner scanner, BinarySearchTree<T> bst,
+                                                      String type) {
+        while (true) {
+            System.out.println("Commands: \n(i) - Insert Item\n(d) - Delete Item\n(p) -" +
+                               "Print Tree\n(s) - Search Item\n(l) - Count Leaf Nodes\n(sp) -" +
+                               "Find Single Parents\n(c) - Find Cousins\n(q) - Quit program\n");
+            String input = scanner.nextLine();
+            switch (input) {
+            case "q":
+                System.out.println("Program ended!");
+                return;
+            case "i":
+            case "d":
+            case "s":
+            case "c":
+                System.out.println("Enter the value:");
+                String s = scanner.readLine().trim();
+                if (type.equals("i")) { // integer value
+                    if (input.equals("i")) { // insert
+                    } else if (input.equals("d")) {// delete
+                    } else if (input.equals("s")) { // search
+                    } else { // find cousins
+                    } // else
+
+                } else if (type.equals("d")) { //double value
+                    if (input.equals("i")) { // insert
+                    } else if (input.equals("d")) { // delete
+                    } else if (input.equals("s")) { // search
+                    } else { // find cousins
+                    } // else
+                } else { // string value
+                    if (input.equals("i")) { // insert
+                    } else if (input.equals("d")) { // delete
+                    } else if (input.equals("s")) { // search
+                    } else { // find cousins
+                    } // else
+
+                } // else
+                break;
+            case "p": // print tree
+                break;
+            case "l": // count leaves
+                break;
+            case "sp": // find single parents
+                break;
+            default:
+                System.out.println("Invalid commands!");
+                break;
+            } // switch
+        } // while
+    } // menu
+} // BinarySearchTreeDriver
