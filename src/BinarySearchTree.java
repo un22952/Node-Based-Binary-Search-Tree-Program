@@ -2,12 +2,17 @@
 /*
  * BinarySearchTree class.
  */
-public BinarySearchTree<T extends Comparable<T>> {
+public class BinarySearchTree<T extends Comparable<T>> {
 
     // The tree root
     private NodeType<T> root;
+    // The tree root temp
+    private NodeType<T> rootTemp;
+
     // the leaf count
     private int leafCount = 0;
+    // the number of members
+    private int size = 0;
 
     /*
      * Inserts the value to the tree.
@@ -15,8 +20,34 @@ public BinarySearchTree<T extends Comparable<T>> {
      * @param T the value.
      */
     public void insert(T key) {
-        insertLoop(root, key, 0);
+
+        root = loopp(root, key);
+
     } // insert
+
+    /*
+     * Loops to insert item.
+     *
+     * @param NodeType<T> root.
+     * @param T key.
+     */
+    public NodeType<T> loopp(NodeType<T> node, T key) {
+        if (node == null) {
+            node = new NodeType<T>();
+            node.info = key;
+            node.left = null;
+            node.right = null;
+            return node;
+        } // if
+        if (node.info.compareTo(key) > 0) {
+            node.left = loopp(node.left, key);
+        } else if (node.info.compareTo(key) < 0) {
+            node.right = loopp(node.right, key);
+        } else {
+            System.out.println("Cannot insert duplicate item!");
+        } // else
+        return node;
+    } //
 
     /*
      * Recursively inserts the value.
@@ -24,34 +55,27 @@ public BinarySearchTree<T extends Comparable<T>> {
      * @param NodeType<T>.
      * @param T key.
      */
-    public void insertLoop(NodeType<T> node, T key, int button) {
-        // add the new node to the tree
-        if (node == null) {
+    public void searchLoop(NodeType<T> node, T key) {
+
+        rootTemp = node;
+        if (rootTemp == null) {
             // this is used for search function when the item is not in the tree
-            if (button == 1) {
-                System.out.println("The item is not in the tree!");
-                return;
-            } // if
-            // create new node
-            node = new NodeType<T>();
-            node.info = key;
+            System.out.println("The item is not in the tree!");
             return;
         } // if
         // go the left of the node
-        if (node.info.compareTo(key) > 0) {
-            insertLoop(node.left, key, searchSwitch);
+        if (rootTemp.info.compareTo(key) > 0) {
+            rootTemp = rootTemp.left;
+            searchLoop(rootTemp, key);
         }
         // go the right of the node
-        else if (node.info.compareTo(key) < 0) {
-            insertLoop(node.right, key, searchSwitch);
+        else if (rootTemp.info.compareTo(key) < 0) {
+            rootTemp = rootTemp.right;
+            searchLoop(rootTemp, key);
         } else {
             // this is for search function when the item is in the tree
-            if (button == 1) {
-                System.out.println("The item is present in the tree!");
-                return;
-            } // if
-            // print warning
-            System.out.println("Cannot insert duplicate item!");
+            System.out.println("The item is present in the tree!");
+            return;
         } // else
     } // insertLoop
 
@@ -65,7 +89,7 @@ public BinarySearchTree<T extends Comparable<T>> {
             System.out.println("The tree is empty!");
             return true;
         } // if
-        insertLoop(root, item, 1);
+        searchLoop(root, item);
         return true;
     } // search
 
@@ -86,12 +110,12 @@ public BinarySearchTree<T extends Comparable<T>> {
      *
      * @param NodeType<T>.
      */
-    public void printInOrder(NodeType<T> node) {
+    public void printInOrder(NodeType<T> root) {
         // recursively print values in order
-        if (node != null) {
-            printInOrder(node.left);
-            System.out.print(node.info + " ");
-            printInOrder(node.right);
+        if (root != null) {
+            printInOrder(root.left);
+            System.out.print(root.info + " ");
+            printInOrder(root.right);
         } // if
     } // printInOrder
 
@@ -132,6 +156,7 @@ public BinarySearchTree<T extends Comparable<T>> {
      *
      */
     public void getNumLeafNodes() {
+        leafCount = 0;
         getLeaf(root, 0);
         System.out.println("The number of leaves in the tree is " + leafCount);
     } // getNumLeafNodes
@@ -152,7 +177,37 @@ public BinarySearchTree<T extends Comparable<T>> {
      * @param T.
      */
     public void getCousins(T item) {
+        NodeType<T> p1 = getRoot(item);
+        System.out.print("The cousins: ");
+        if (p1 != null) { // check the parent of the item
+            NodeType<T> p2 = getRoot(p1.info);
+            if (p2 != null) { // check the grandparent of the item
+                if (p2.info.compareTo(item) > 0) {
+                    p2 = p2.right;
+                    if (p2 != null) { // check the right uncle's/ aunt's item
+                        if (p2.left != null) { // print the left cousin
+                            System.out.print(p2.left.info + " ");
+                        } // if
+                        if (p2.right != null) { // print the right cousin
+                            System.out.print(p2.right.info);
+                        } // if
+                    } // if
+                } else {
+                    p2 = p2.left;
+                    if (p2 != null) { // check the uncle's/aunt's item
+                        if (p2.left != null) { // print the left cousin
+                            System.out.print(p2.left.info + " ");
+                        } // if
+                        if (p2.right != null) { // print the right cousin
+                            System.out.println(p2.right.info);
+                        } // if
+                    } // if
 
+                } // else
+
+            } // if
+        } // if
+        System.out.println("");
     } // getCousins
 
     /*
@@ -160,12 +215,14 @@ public BinarySearchTree<T extends Comparable<T>> {
      *
      * @param T item.
      */
-    public NodeType<T extends Comparable<T>> getRoot(T item) {
-        NodeTtpe<T> parent = root;
+    public NodeType<T> getRoot(T item) {
+        NodeType<T> parent = root;
+
         while (parent != null) {
 
             if ((parent.left != null && parent.left.info.compareTo(item) == 0)
                 || (parent.right != null && parent.right.info.compareTo(item) == 0)) {
+
                 return parent;
             } // if
             if (parent.info.compareTo(item) < 0) {
@@ -173,10 +230,11 @@ public BinarySearchTree<T extends Comparable<T>> {
             } else if (parent.info.compareTo(item) > 0) {
                 parent = parent.left;
             } else {
-                return;
+
+                return null;
             } // else
-        } // if
-        return;
+        } // while
+        return null;
     } // getRoot
 
 } // BinarySearchTree class
