@@ -18,9 +18,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param T the value.
      */
     public void insert(T key) {
-        //inOrder();
         root = loopp(root, key);
-        //inOrder();
     } // insert
 
     /*
@@ -221,11 +219,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
         } // if
 
         NodeType<T> targetP = getRoot(key); // parent of the target
-        NodeType<T> target = root; // the default target
+        NodeType<T> target = null;
         NodeType<T> oldest; // the predecessor of the target
         NodeType<T> oldestP; // the parent of the target's predecessor
         NodeType<T> oldestC; // the smallest child of the target's predecessor
-
+        // case we're removing the root
+        if (root.info.compareTo(key) == 0) {
+            target = root;
+        } // if
         if (targetP != null && targetP.info.compareTo(key) < 0) {
             target = targetP.right; // target is the right child
         } else if (targetP != null && targetP.info.compareTo(key) > 0) {
@@ -280,6 +281,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 root = oldest;// this is when the root is removed
             } // else
         } // if
+        System.out.println("After deletion:");
         inOrder();
 
     } // delete
