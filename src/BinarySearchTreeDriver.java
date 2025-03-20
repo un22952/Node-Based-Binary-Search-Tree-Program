@@ -14,21 +14,24 @@ public class BinarySearchTreeDriver {
      */
     public static void main (String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+        // read file
         try(BufferedReader reader = new BufferedReader(
                 new FileReader(args[0]))) {
             String[] stF = reader.readLine().split("\\s+");
             System.out.println("Enter tree type (i - int, d - double, s std:string): ");
             String str = scanner.nextLine();
-            if (str.equals("i")) {
+            if (str.equals("i")) { // integer
                 BinarySearchTree<Integer> bst = new BinarySearchTree<Integer>();
                 readF(stF, bst, "i");
                 menu(scanner, bst, "i");
-
-            } else if (str.equals("d")) {
+            } else if (str.equals("d")) { // double
                 BinarySearchTree<Double> bst = new BinarySearchTree<Double>();
-            } else {
+                readF(stF, bst, "d");
+                menu(scanner, bst, "d");
+            } else { // string
                 BinarySearchTree<String> bst = new BinarySearchTree<String>();
+                readF(stF, bst, "s");
+                menu(scanner, bst, "s");
             } // else
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,11 +44,10 @@ public class BinarySearchTreeDriver {
      */
     public static <T extends Comparable<T>> void readF(String[] str,
                                                        BinarySearchTree<T> bst, String type) {
-
+        // sort the initial data
         for (String each: str) {
             if (type.equals("i")) { // integer
                 bst.insert((T) Integer.valueOf(each));
-                System.out.println(each);
             } else if (type.equals("d")) { // double
                 bst.insert((T) Double.valueOf(each));
             } else { // string
@@ -57,9 +59,10 @@ public class BinarySearchTreeDriver {
     public static <T extends Comparable<T>> void menu(Scanner scanner, BinarySearchTree<T> bst,
                                                       String type) {
         while (true) {
-            System.out.print("Commands: \n(i) - Insert Item\n(d) - Delete Item\n(p) -" +
-                               " Print Tree\n(s) - Search Item\n(l) - Count Leaf Nodes\n(sp) -" +
-                               "Find Single Parents\n(c) - Find Cousins\n(q) - Quit program\n");
+            System.out.print("Commands: \n(i)  -  Insert Item\n(d)  -  Delete Item\n(p)  -" +
+                               "  Print Tree\n(s)  -  Search Item\n(l)  -  Count Leaf " +
+                             "Nodes\n(sp) -  Find Single Parents\n(c"
+                             + ")  -  Find Cousins\n(q)  -  Quit program\n");
             String input = scanner.nextLine();
             switch (input) {
             case "q":
@@ -74,9 +77,10 @@ public class BinarySearchTreeDriver {
                 if (type.equals("i")) { // integer value
                     if (input.equals("i")) { // insert
                         bst.insert((T) Integer.valueOf(s));
+                        bst.inOrder();
                     } else if (input.equals("d")) {// delete
-
-                        //bst.delete((T) Integer.valueOf(s));
+                        bst.inOrder();
+                        bst.delete((T) Integer.valueOf(s));
                     } else if (input.equals("s")) { // search
                         bst.search((T) Integer.valueOf(s));
                     } else { // find cousins
@@ -86,18 +90,26 @@ public class BinarySearchTreeDriver {
                 } else if (type.equals("d")) { //double value
                     if (input.equals("i")) { // insert
                         bst.insert((T) Double.valueOf(s));
+                        bst.inOrder();
                     } else if (input.equals("d")) { // delete
+                        bst.inOrder();
+                        bst.delete((T) Double.valueOf(s));
                     } else if (input.equals("s")) { // search
-                        bst.insert((T) Double.valueOf(s));
+                        bst.search((T) Double.valueOf(s));
                     } else { // find cousins
+                        bst.getCousins((T) Double.valueOf(s));
                     } // else
                 } else { // string value
                     if (input.equals("i")) { // insert
                         bst.insert((T) s);
+                        bst.inOrder();
                     } else if (input.equals("d")) { // delete
+                        bst.inOrder();
+                        bst.delete((T) s);
                     } else if (input.equals("s")) { // search
                         bst.search((T) s);
                     } else { // find cousins
+                        bst.getCousins((T) s);
                     } // else
 
                 } // else

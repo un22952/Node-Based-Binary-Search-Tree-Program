@@ -11,8 +11,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     // the leaf count
     private int leafCount = 0;
-    // the number of members
-    private int size = 0;
 
     /*
      * Inserts the value to the tree.
@@ -20,9 +18,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param T the value.
      */
     public void insert(T key) {
-
+        //inOrder();
         root = loopp(root, key);
-
+        //inOrder();
     } // insert
 
     /*
@@ -85,6 +83,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param T item.
      */
     public boolean search(T item) {
+        inOrder();
         if (root == null) {
             System.out.println("The tree is empty!");
             return true;
@@ -101,6 +100,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             System.out.println("The tree is empty!");
             return;
         } // if
+        System.out.print("In Order: ");
         printInOrder(root);
         System.out.print("\n");
     } // inOrder
@@ -110,12 +110,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
      *
      * @param NodeType<T>.
      */
-    public void printInOrder(NodeType<T> root) {
+    public void printInOrder(NodeType<T> node) {
         // recursively print values in order
-        if (root != null) {
-            printInOrder(root.left);
-            System.out.print(root.info + " ");
-            printInOrder(root.right);
+        if (node != null) {
+            printInOrder(node.left);
+            System.out.print(node.info + " ");
+            printInOrder(node.right);
         } // if
     } // printInOrder
 
@@ -126,7 +126,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public void getLeaf(NodeType<T> node, int button) {
         // recursively get to the end of each branch
         if (node != null) {
-
+            // go to the left
             getLeaf(node.left, button);
             // this is for leaf counting
             if (node.left == null && node.right == null) {
@@ -146,7 +146,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     System.out.print(node.info + " ");
                 } // if
             } // else if
-
+            // go to the right
             getLeaf(node.right, button);
         } // if
     } // getLeaf
@@ -177,13 +177,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param T.
      */
     public void getCousins(T item) {
-        NodeType<T> p1 = getRoot(item);
+        NodeType<T> p1 = getRoot(item); // parent of the item
         System.out.print("The cousins: ");
         if (p1 != null) { // check the parent of the item
-            NodeType<T> p2 = getRoot(p1.info);
+            NodeType<T> p2 = getRoot(p1.info); // grandparent of the item
             if (p2 != null) { // check the grandparent of the item
                 if (p2.info.compareTo(item) > 0) {
-                    p2 = p2.right;
+                    p2 = p2.right; // uncle or aunt of the item on the right of the grandparent
                     if (p2 != null) { // check the right uncle's/ aunt's item
                         if (p2.left != null) { // print the left cousin
                             System.out.print(p2.left.info + " ");
@@ -193,7 +193,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         } // if
                     } // if
                 } else {
-                    p2 = p2.left;
+                    p2 = p2.left; // uncle or aunt of the left of the grand parent
                     if (p2 != null) { // check the uncle's/aunt's item
                         if (p2.left != null) { // print the left cousin
                             System.out.print(p2.left.info + " ");
@@ -209,6 +209,80 @@ public class BinarySearchTree<T extends Comparable<T>> {
         } // if
         System.out.println("");
     } // getCousins
+
+    /*
+     * Deletes a node.
+     *
+     */
+    public void delete(T key) {
+        if (root == null) {
+            System.out.println("The tree is empty!");
+            return;
+        } // if
+
+        NodeType<T> targetP = getRoot(key); // parent of the target
+        NodeType<T> target = root; // the default target
+        NodeType<T> oldest; // the predecessor of the target
+        NodeType<T> oldestP; // the parent of the target's predecessor
+        NodeType<T> oldestC; // the smallest child of the target's predecessor
+
+        if (targetP != null && targetP.info.compareTo(key) < 0) {
+            target = targetP.right; // target is the right child
+        } else if (targetP != null && targetP.info.compareTo(key) > 0) {
+            target = targetP.left; // target is the left child
+        } //
+        // get the largest value on the left side of the target
+        if (target != null) {
+            oldest = target.left; // go left
+            while (oldest != null && oldest.right != null) {
+                oldest = oldest.right; // keep going right
+            } // while
+            if (oldest == null) { // go to right to get the predecessor
+                oldest = target.right;
+            } // if
+
+
+            if (oldest != null) {
+                oldestP = getRoot(oldest.info);
+                oldestC = oldest;
+                // get the left most child of oldest
+                while (oldestC.left != null) {
+                    oldestC = oldestC.left;
+                } // while
+                if (oldestP.info.compareTo(oldest.info) < 0) {
+                    oldestP.right = null; // remove the largest node on the right
+                    // connect the oldest right to the right child of the target
+                    if (target.right != null) {
+                        oldest.right = target.right;
+
+                    } // if
+                    // connect the left most child of the oldest to the left of the target
+                    if (target.left != null) {
+                        oldestC.left = target.left;
+                    } // if
+
+                } else if (oldestP.info.compareTo(oldest.info) > 0) {
+                    oldestP.left = null; // remove the largest node on the left
+                    if (oldestP.right != null) {
+                        oldest.right = oldestP.right;
+                    } // if
+                } // else if
+
+            } // if
+            // link the parent of the target to the oldest
+            if (targetP != null) {
+                if (targetP.info.compareTo(target.info) > 0) {
+                    targetP.left = oldest; // oldest is on the left side of the target parent
+                } else {
+                    targetP.right = oldest; // odest is on the right side of the target parent
+                } // else
+            } else {
+                root = oldest;// this is when the root is removed
+            } // else
+        } // if
+        inOrder();
+
+    } // delete
 
     /*
      * Gets root.
@@ -236,5 +310,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
         } // while
         return null;
     } // getRoot
+
 
 } // BinarySearchTree class
