@@ -62,8 +62,10 @@ public class BinarySearchTreeDriver {
             System.out.print("Commands: \n(i)  -  Insert Item\n(d)  -  Delete Item\n(p)  -" +
                                "  Print Tree\n(s)  -  Search Item\n(l)  -  Count Leaf " +
                              "Nodes\n(sp) -  Find Single Parents\n(c"
-                             + ")  -  Find Cousins\n(q)  -  Quit program\n");
+                             + ")  -  Find Cousins\n(q)  -  Quit program\n Enter a command:\n");
+
             String input = scanner.nextLine();
+
             switch (input) {
             case "q":
                 System.out.println("Program ended!");
@@ -72,8 +74,10 @@ public class BinarySearchTreeDriver {
             case "d":
             case "s":
             case "c":
+                bst.inOrder();
                 System.out.println("Enter the value:");
                 String s = scanner.nextLine().trim();
+
                 if (type.equals("i")) { // integer value
                     if (input.equals("i")) { // insert
                         bst.insert((T) Integer.valueOf(s));

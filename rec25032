@@ -1,0 +1,25 @@
+Nguyen_project3:
+total 12
+drwxr-xr-x. 2 myid 110 Mar 18 19:49 bin
+-rw-r--r--. 1 myid   0 Mar 20 10:28 rec25032
+-rw-r--r--. 1 myid 944 Mar 19 20:45 rec27448
+-rwxr--r--. 1 myid 205 Mar 19 20:33 runn.sh
+-rwx--x--x. 1 myid 202 Mar 18 13:24 #run.sh#
+drwxr-xr-x. 2 myid 210 Mar 20 10:24 src
+
+Nguyen_project3/bin:
+total 16
+-rw-r--r--. 1 myid 4408 Mar 20 10:25 BinarySearchTree.class
+-rw-r--r--. 1 myid 3614 Mar 20 10:25 BinarySearchTreeDriver.class
+-rw-r--r--. 1 myid  395 Mar 20 10:25 NodeType.class
+
+Nguyen_project3/src:
+total 40
+-rw-r--r--. 1 myid  5220 Mar 19 20:34 BinarySearchTreeDriver.java
+-rw-r--r--. 1 myid 10337 Mar 20 10:24 BinarySearchTree.java
+-rw-r--r--. 1 myid    38 Mar 19 20:09 double-input.txt
+-rw-r--r--. 1 myid    29 Mar 18 13:17 int-input.txt
+-rw-r--r--. 1 myid   176 Mar 13 19:44 NodeType.java
+-rw-r--r--. 1 myid   387 Mar 19 20:42 README.txt
+-rw-r--r--. 1 myid    32 Mar 19 20:10 string-input.txt
+/home/myid/un22952/cs2720_spring_2025/Nguyen_project3:/home/myid/csci-2720e
